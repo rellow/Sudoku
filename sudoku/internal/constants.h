@@ -9,6 +9,8 @@
 #include "intel_core_14th_ddr5.h"
 #elif defined(COMPILE_ZEN_4)
 #include "amd_ryzen_zen4_ddr5.h"
+#elif defined(COMPILE_P620_ZEN3_DDR4)
+#include "amd_p620_zen3_ddr4.h"
 #else
 #error "Please add the appropriate header files in compile options."
 #endif

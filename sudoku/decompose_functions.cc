@@ -44,6 +44,11 @@ void PrintHelp(std::string msg) {
 }
 
 int main(int argc, char* argv[]) {
+#if defined(COMPILE_P620_ZEN3_DDR4)
+  (void)argc; (void)argv;
+  spdlog::error("P620_ZEN3_DDR4 is uncalibrated. Automated mapping inference/validation/decomposition is disabled; use observation-only testing.");
+  return EXIT_FAILURE;
+#endif
   std::string fname_prefix = "default", type = "ddr4";
   uint64_t num_pages = 19, page_size = 1ULL * 1024ULL * 1024ULL * 1024ULL,
            granularity = (1ULL << CACHELINE_OFFSET), num_dimms = 1,

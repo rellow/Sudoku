@@ -1,0 +1,10 @@
+Unique physical frames: 8
+0xd80000000 run_count= 3
+0xdc0000000 run_count= 3
+0xe00000000 run_count= 5
+0xe40000000 run_count= 5
+0xe80000000 run_count= 2
+0xec0000000 run_count= 2
+0xf00000000 run_count= 3
+0xf40000000 run_count= 3
+Variable frame-base bits: [30, 31, 32, 33]

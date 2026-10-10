@@ -16,6 +16,11 @@ bool InitMemoryPool(MemoryPool* pool) {
     map_flag |= (MAP_HUGETLB | MAP_HUGE_1GB);
   }
 
+  if (pool->config->num_pages == 0 || pool->config->page_size == 0 ||
+      pool->config->num_pages > UINT64_MAX / pool->config->page_size) {
+    PRINT_ERROR("[-] Invalid memory pool allocation parameters\n");
+    return false;
+  }
   pool->config->pool_size = pool->config->num_pages * pool->config->page_size;
   pool->gen = std::mt19937(std::random_device{}());
   pool->page_dist =
@@ -31,8 +36,13 @@ bool InitMemoryPool(MemoryPool* pool) {
                                 PROT_READ | PROT_WRITE, map_flag, -1, 0));
 
     if (pool->pages[i] == MAP_FAILED) {
-      PRINT_ERROR("[-] mmap failed\n");
-      exit(EXIT_FAILURE);
+      perror("Sudoku mmap");
+      for (uint64_t j = 0; j < i; ++j) {
+        munmap(pool->pages[j], pool->config->page_size);
+      }
+      delete[] pool->pages;
+      pool->pages = nullptr;
+      return false;
     }
   }
 
@@ -80,8 +90,11 @@ uint64_t VirtToPhys(uint64_t vaddr) {
     exit(EXIT_FAILURE);
   }
 
-  assert(paddr & (1ULL << 63));  // page
-  paddr &= 0x7fffffffffffffULL;
+  if ((paddr & (1ULL << 63)) == 0 || (paddr & ((1ULL << 55) - 1)) == 0) {
+    PRINT_ERROR("[-] pagemap page not present or PFN unavailable\n");
+    exit(EXIT_FAILURE);
+  }
+  paddr &= ((1ULL << 55) - 1);
 
   return (paddr * page_size) | (vaddr % page_size);
 }
