@@ -27,7 +27,8 @@ def analyze(csvpath,manifestpath,metric,seed):
                 if x==y or x%64 or y%64:raise ValueError('unaligned/identical addresses')
                 if r['run_id']!=m['run_id']:raise ValueError('run ID mismatch')
                 pair=(r['run_id'],r['pair_id'])
-                if pair in ids:raise ValueError('duplicate pair');ids.add(pair)
+                if pair in ids: raise ValueError('duplicate pair')
+                ids.add(pair)
                 if int(r['frame_index'])!=int(frames[b]['index']) or int(r['numa_node'])!=int(frames[b]['numa_node']):raise ValueError('index/NUMA mismatch')
                 lo,p10,med,p90,hi=[float(r[k]) for k in ('min','p10','median','p90','max')]
                 avg=float(r['mean']);n=int(r['trials'])
