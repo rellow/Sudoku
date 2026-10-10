@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "config.h"
-#include "memory.h"
+// MemoryPool is defined in pool.h; no memory.h exists in this repository.
 #include "pool.h"
 #include "utils.h"
 
