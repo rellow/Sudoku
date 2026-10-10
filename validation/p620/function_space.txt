@@ -1,0 +1,4 @@
+Functions: 6
+GF(2) rank: 6
+Independent: True
+Equivalent alternative basis: True
