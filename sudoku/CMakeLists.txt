@@ -36,3 +36,7 @@ foreach(SUDOKU_BINARY ${SUDOKU_BINARY_NAME})
     target_link_libraries(${SUDOKU_BINARY} PRIVATE 
         sudoku_internal_lib sudoku_lib spdlog::spdlog)
 endforeach(SUDOKU_BINARY ${SUDOKU_BINARY_NAME})
+
+# P620-specific non-destructive observation. No automatic address inference.
+add_executable(p620_observe ${CMAKE_CURRENT_SOURCE_DIR}/p620_observe.cc)
+target_link_libraries(p620_observe PRIVATE sudoku_internal_lib)
